@@ -1,52 +1,91 @@
 package com.beaverhosting.containermanager.controllers;
 
+import com.beaverhosting.containermanager.forms.ContainerCreationForm;
 import com.beaverhosting.containermanager.resources.ContainerStatus;
 import com.beaverhosting.containermanager.services.ContainerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping(path = "/container")
 public class ContainerController {
 
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
+    private final ContainerService containerService;
 
-    @RequestMapping("/create")
+    @Autowired
+    public ContainerController(ContainerService containerService){
+        this.containerService = containerService;
+    }
+
+    @PostMapping("/")
     public ResponseEntity<ContainerStatus> createContainer(
-            @RequestParam(value="name", defaultValue="") String name) {
-        return ContainerService.createContainer(name);
+            @RequestBody @Valid ContainerCreationForm containerCreationForm) {
+        Map<String, String> results = containerService.createContainer(containerCreationForm);
+
+        return new ResponseEntity<>(ContainerStatus.builder()
+                .name(containerCreationForm.getName())
+                .status(results.get("status"))
+                .stdout(results.get("stdOut"))
+                .stderr(results.get("stdErr"))
+                .build(), HttpStatus.OK);
     }
 
-    @RequestMapping("/delete")
+    @DeleteMapping("/{name}")
     public ResponseEntity<ContainerStatus> deleteContainer(
-            @RequestParam(value="name", defaultValue="") String name) {
+            @PathVariable(value="name") String name) {
 
-        return ContainerService.deleteContainer(name);
+
+        Map<String, String> results = containerService.deleteContainer(name);
+
+        return new ResponseEntity<>(ContainerStatus.builder()
+                .name(name)
+                .status(results.get("status"))
+                .stdout(results.get("stdOut"))
+                .stderr(results.get("stdErr"))
+                .build(), HttpStatus.OK);
     }
 
-    @RequestMapping("/status")
+    @GetMapping("/{name}")
     public ResponseEntity<ContainerStatus> statusContainer(
-            @RequestParam(value="name", defaultValue="") String name) {
+            @PathVariable(value="name") String name) {
 
-        return ContainerService.statusContainer(name);
+        Map<String, String> results = containerService.statusContainer(name);
+        return new ResponseEntity<>(ContainerStatus.builder()
+                .name(name)
+                .status(results.get("status"))
+                .stdout(results.get("stdOut"))
+                .stderr(results.get("stdErr"))
+                .build(), HttpStatus.OK);
     }
 
-    @RequestMapping("/ip")
+    @GetMapping("/{name}/ip")
     public ResponseEntity<ContainerStatus> getIPContainer(
-            @RequestParam(value="name", defaultValue="") String name) {
-        return ContainerService.getIPContainer(name);
+            @PathVariable(value="name") String name) {
+        Map<String, String> results = containerService.getIPContainer(name);
+        return new ResponseEntity<>(ContainerStatus.builder()
+                .name(name)
+                .status(results.get("status"))
+                .stdout(results.get("stdOut"))
+                .stderr(results.get("stdErr"))
+                .build(), HttpStatus.OK);
     }
 
-    @RequestMapping("/port")
+    @GetMapping("/{name}/port")
     public ResponseEntity<ContainerStatus> getPortContainer(
-            @RequestParam(value="name", defaultValue="") String name) {
-        return ContainerService.getPortContainer(name);
+            @PathVariable(value="name") String name) {
+        Map<String, String> results = containerService.getPortContainer(name);
+        return new ResponseEntity<>(ContainerStatus.builder()
+                .name(name)
+                .status(results.get("status"))
+                .stdout(results.get("stdOut"))
+                .stderr(results.get("stdErr"))
+                .build(), HttpStatus.OK);
     }
 
 }
