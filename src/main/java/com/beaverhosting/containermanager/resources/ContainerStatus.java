@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ContainerStatus {
-    private String name;
-    private String status;
-    private String stdout;
-    private String stderr;
+    String name;
+    String status;
+    String stdout;
+    String stderr;
 }

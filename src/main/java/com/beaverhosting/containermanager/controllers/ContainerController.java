@@ -10,18 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping(path = "/container")
 public class ContainerController {
 
-    private final ContainerService containerService;
-
     @Autowired
-    public ContainerController(ContainerService containerService){
-        this.containerService = containerService;
-    }
+    private ContainerService containerService;
 
     @PostMapping("/")
     public ResponseEntity<ContainerStatus> createContainer(

@@ -2,7 +2,6 @@ package com.beaverhosting.containermanager.services;
 
 import com.beaverhosting.containermanager.forms.ContainerCreationForm;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +14,8 @@ import java.util.regex.Pattern;
 @Service
 public class ContainerService {
 
+    @Value("${deployment.path}")
     private String DEPLOYMENTS_PATH;
-
-    @Autowired
-    public ContainerService(@Value("${deployment.path}") String deploymentPath){
-        this.DEPLOYMENTS_PATH = deploymentPath;
-    }
 
     public Map<String, String> createContainer(ContainerCreationForm containerCreationForm) { //TODO: Return http status code 500 if kubectl fail
         return execCmd(String.format("kubectl create -f %s%s%s", DEPLOYMENTS_PATH, containerCreationForm.getName(), "/deployment.yaml"));
