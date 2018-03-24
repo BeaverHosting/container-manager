@@ -1,12 +1,11 @@
-package com.beaverhosting.containermanager.forms;
+package com.beaverhosting.containermanager.dto;
 
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class ContainerCreationForm {
-
+public class ContainerWriteDto {
     @NotBlank(message = "{name.required}")
     private String name;
 }

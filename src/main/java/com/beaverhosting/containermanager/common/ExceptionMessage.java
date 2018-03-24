@@ -1,4 +1,4 @@
-package com.beaverhosting.containermanager.controllers.exceptions;
+package com.beaverhosting.containermanager.common;
 
 import lombok.AccessLevel;
 import lombok.Builder;

@@ -1,6 +1,6 @@
-package com.beaverhosting.containermanager.controllers.advices;
+package com.beaverhosting.containermanager.config;
 
-import com.beaverhosting.containermanager.controllers.exceptions.ExceptionMessage;
+import com.beaverhosting.containermanager.common.ExceptionMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @RestControllerAdvice
-public class ControllerExceptionHandlerAdvice {
+public class RestExceptionHandler {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 

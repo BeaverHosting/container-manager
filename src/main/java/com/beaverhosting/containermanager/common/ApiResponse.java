@@ -1,4 +1,4 @@
-package com.beaverhosting.containermanager.resources;
+package com.beaverhosting.containermanager.common;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Builder
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ContainerStatus {
+public class ApiResponse {
     String name;
     String status;
     String stdout;

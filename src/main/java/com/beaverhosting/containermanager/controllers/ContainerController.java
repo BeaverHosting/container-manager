@@ -1,7 +1,7 @@
 package com.beaverhosting.containermanager.controllers;
 
-import com.beaverhosting.containermanager.forms.ContainerCreationForm;
-import com.beaverhosting.containermanager.resources.ContainerStatus;
+import com.beaverhosting.containermanager.dto.ContainerWriteDto;
+import com.beaverhosting.containermanager.common.ApiResponse;
 import com.beaverhosting.containermanager.services.ContainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +19,12 @@ public class ContainerController {
     private ContainerService containerService;
 
     @PostMapping("/")
-    public ResponseEntity<ContainerStatus> createContainer(
-            @RequestBody @Valid ContainerCreationForm containerCreationForm) {
-        Map<String, String> results = containerService.createContainer(containerCreationForm);
+    public ResponseEntity<ApiResponse> createContainer(
+            @RequestBody @Valid ContainerWriteDto containerWriteDto) {
+        Map<String, String> results = containerService.createContainer(containerWriteDto);
 
-        return new ResponseEntity<>(ContainerStatus.builder()
-                .name(containerCreationForm.getName())
+        return new ResponseEntity<>(ApiResponse.builder()
+                .name(containerWriteDto.getName())
                 .status(results.get("status"))
                 .stdout(results.get("stdOut"))
                 .stderr(results.get("stdErr"))
@@ -32,13 +32,13 @@ public class ContainerController {
     }
 
     @DeleteMapping("/{name}")
-    public ResponseEntity<ContainerStatus> deleteContainer(
+    public ResponseEntity<ApiResponse> deleteContainer(
             @PathVariable(value="name") String name) {
 
 
         Map<String, String> results = containerService.deleteContainer(name);
 
-        return new ResponseEntity<>(ContainerStatus.builder()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .name(name)
                 .status(results.get("status"))
                 .stdout(results.get("stdOut"))
@@ -47,11 +47,11 @@ public class ContainerController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<ContainerStatus> statusContainer(
+    public ResponseEntity<ApiResponse> statusContainer(
             @PathVariable(value="name") String name) {
 
         Map<String, String> results = containerService.statusContainer(name);
-        return new ResponseEntity<>(ContainerStatus.builder()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .name(name)
                 .status(results.get("status"))
                 .stdout(results.get("stdOut"))
@@ -60,10 +60,10 @@ public class ContainerController {
     }
 
     @GetMapping("/{name}/ip")
-    public ResponseEntity<ContainerStatus> getIPContainer(
+    public ResponseEntity<ApiResponse> getIPContainer(
             @PathVariable(value="name") String name) {
         Map<String, String> results = containerService.getIPContainer(name);
-        return new ResponseEntity<>(ContainerStatus.builder()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .name(name)
                 .status(results.get("status"))
                 .stdout(results.get("stdOut"))
@@ -72,10 +72,10 @@ public class ContainerController {
     }
 
     @GetMapping("/{name}/port")
-    public ResponseEntity<ContainerStatus> getPortContainer(
+    public ResponseEntity<ApiResponse> getPortContainer(
             @PathVariable(value="name") String name) {
         Map<String, String> results = containerService.getPortContainer(name);
-        return new ResponseEntity<>(ContainerStatus.builder()
+        return new ResponseEntity<>(ApiResponse.builder()
                 .name(name)
                 .status(results.get("status"))
                 .stdout(results.get("stdOut"))
